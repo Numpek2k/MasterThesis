@@ -5,6 +5,7 @@ import HealthConnect from "@/components/HealthConnect";
 import {initialize} from "react-native-health-connect";
 import {useEffect} from "react";
 import {HealthConnectStepCounter} from "@/components/HealthConnectStepCounter";
+import {WalkingZombie} from "@/components/WalkingZombie";
 
 export default function HomeScreen() {
 
@@ -15,6 +16,7 @@ export default function HomeScreen() {
         <Image
           source={require('@/assets/images/3294.jpg')}
           style={styles.reactLogo}
+          resizeMode="contain"
         />
       }>
       <HealthConnectStepCounter></HealthConnectStepCounter>
@@ -24,20 +26,9 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
   reactLogo: {
     height: '100%',
-    width: 700,
-    bottom: 0,
-    left: -100,
-    position: 'absolute',
+    width: null,
+    aspectRatio: 7000 / 2333, // Maintain the aspect ratio of the image
   },
 });

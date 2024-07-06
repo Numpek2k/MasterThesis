@@ -1,10 +1,11 @@
-import type { PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet, useColorScheme } from 'react-native';
+import {PropsWithChildren, ReactElement, useEffect} from 'react';
+import {Image, StyleSheet, useColorScheme, View} from 'react-native';
 import Animated, {
+  Easing,
   interpolate,
   useAnimatedRef,
   useAnimatedStyle,
-  useScrollViewOffset,
+  useScrollViewOffset, useSharedValue, withRepeat, withTiming,
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';
@@ -42,6 +43,26 @@ export default function ParallaxScrollView({
     };
   });
 
+  // Shared value for horizontal animation
+  const translateX = useSharedValue(0);
+
+  // Animated style for header image
+  const headerImageAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: translateX.value }],
+    };
+  });
+
+  // Start the animation loop
+  useEffect(() => {
+    translateX.value = withRepeat(
+        withTiming(-1050, { duration: 30000, easing: Easing.linear}, ), // Move from 0 to -500 over 10 seconds
+        -1, // Repeat indefinitely
+        false, // Do not reverse direction
+
+    );
+  }, [translateX]);
+
   return (
     <ThemedView style={styles.container}>
       <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
@@ -51,7 +72,54 @@ export default function ParallaxScrollView({
             { backgroundColor: headerBackgroundColor[colorScheme] },
             headerAnimatedStyle,
           ]}>
-          {headerImage}
+          <Animated.View style={[styles.headerImageContainer, headerImageAnimatedStyle]}>
+            {headerImage}
+            <View style={styles.secondImage}>
+              {headerImage}
+            </View>
+          </Animated.View>
+        </Animated.View>
+        <Animated.View style={styles.gifOverlay}>
+          <Image
+              source={require('@/assets/images/walking_zombie.gif')}
+              style={[styles.gifZombie, styles.zombie1]}
+          />
+        </Animated.View>
+        <Animated.View style={styles.gifOverlay}>
+          <Image
+              source={require('@/assets/images/walking_zombie.gif')}
+              style={[styles.gifZombie, styles.zombie2]}
+          />
+        </Animated.View>
+        <Animated.View style={styles.gifOverlay}>
+          <Image
+              source={require('@/assets/images/walking_zombie.gif')}
+              style={[styles.gifZombie, styles.zombie3]}
+          />
+        </Animated.View>
+        <Animated.View style={styles.gifOverlay}>
+          <Image
+              source={require('@/assets/images/walking_zombie.gif')}
+              style={[styles.gifZombie, styles.zombie4]}
+          />
+        </Animated.View>
+        <Animated.View style={styles.gifOverlay}>
+          <Image
+              source={require('@/assets/images/walking_zombie.gif')}
+              style={[styles.gifZombie, styles.zombie5]}
+          />
+        </Animated.View>
+        <Animated.View style={styles.gifOverlay}>
+          <Image
+              source={require('@/assets/images/walking_zombie.gif')}
+              style={[styles.gifZombie, styles.zombie6]}
+          />
+        </Animated.View>
+        <Animated.View style={styles.gifOverlay}>
+          <Image
+              source={require('@/assets/images/male_run.gif')}
+              style={[styles.gifMainCharacter, styles.character]}
+          />
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
       </Animated.ScrollView>
@@ -63,14 +131,62 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  secondImage: {
+    left: -1.5
+  },
   header: {
     height: 350,
     overflow: 'hidden',
   },
+  headerImageContainer: {
+    width: 14000, // Double the width of the image to allow for smooth looping
+    height: '100%',
+    left: -10,
+    flexDirection: 'row', // Arrange images side by side
+  },
   content: {
     flex: 1,
     padding: 32,
-    gap: 16,
+    gap: 0,
     overflow: 'hidden',
+  },
+  gifOverlay: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  gifZombie: {
+    width: 48,
+    height: 48
+  },
+  gifMainCharacter: {
+    width: 80,
+    height: 80
+  },
+  zombie1: {
+    top: '59%',
+    left: 10
+  },
+  zombie2: {
+    top: '68%',
+    left: 30
+  },
+  zombie3: {
+    top: '64%',
+    left: 45
+  },
+  zombie4: {
+    top: '66%',
+    left: 15
+  },
+  zombie5: {
+    top: '60%',
+    left: 60
+  },
+  zombie6: {
+    top: '64%',
+    left: 70
+  },
+  character: {
+    top: '58%',
+    right: '-75%'
   },
 });

@@ -1,7 +1,6 @@
 import {StyleSheet} from "react-native";
 import {ThemedView} from "@/components/ThemedView";
 import Animated, {useAnimatedRef} from "react-native-reanimated";
-import {HealthConnectStepCounter} from "@/components/HealthConnectStepCounter";
 import React, {PropsWithChildren} from "react";
 
 export function Scrollable({children}: PropsWithChildren){

@@ -1,11 +1,9 @@
-import {PropsWithChildren, ReactElement, useEffect} from 'react';
-import {Image, StyleSheet, useColorScheme, View} from 'react-native';
+import {PropsWithChildren, useEffect} from 'react';
+import {Image, StyleSheet, useColorScheme} from 'react-native';
 import Animated, {
   Easing,
-  interpolate,
-  useAnimatedRef,
   useAnimatedStyle,
-  useScrollViewOffset, useSharedValue, withRepeat, withTiming,
+  useSharedValue, withRepeat, withTiming,
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';

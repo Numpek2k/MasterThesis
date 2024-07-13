@@ -24,11 +24,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="caloriesJournal"
         options={{
-          title: 'Explore',
+          title: 'Calories',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'nutrition' : 'nutrition-outline'} color={color} />
           ),
         }}
       />

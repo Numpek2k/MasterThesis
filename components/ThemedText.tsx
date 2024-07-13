@@ -1,6 +1,7 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
+import {useFonts} from "expo-font";
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
@@ -16,7 +17,9 @@ export function ThemedText({
   ...rest
 }: ThemedTextProps) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-
+  const [loaded] = useFonts({
+    MinecraftRegular: require('../assets/fonts/F77MinecraftRegular.ttf'),
+  });
   return (
     <Text
       style={[
@@ -37,24 +40,27 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: "MinecraftRegular"
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
+    fontFamily: "MinecraftRegular"
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
     lineHeight: 32,
+    fontFamily: "MinecraftRegular"
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: "MinecraftRegular"
   },
   link: {
     lineHeight: 30,
     fontSize: 16,
     color: '#0a7ea4',
+    fontFamily: "MinecraftRegular"
   },
 });

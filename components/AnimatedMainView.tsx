@@ -109,7 +109,8 @@ export default function AnimatedMainView({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    height:350,
   },
   secondImage: {
     left: -1.5

@@ -73,6 +73,7 @@ export function HealthConnectStepCounter() {
     useEffect(() => {
         initializeHealthConnect()
         checkAvailability()
+        // requestSamplePermissions()
         aggregateLast24HoursSteps()
         // requestSamplePermissions()
         // const interval = setInterval(() => {

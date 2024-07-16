@@ -1,18 +1,18 @@
 import {StyleSheet} from "react-native";
 import {ThemedView} from "@/components/ThemedView";
-import Animated, {StyleProps, useAnimatedRef} from "react-native-reanimated";
-import React, {PropsWithChildren, useEffect} from "react";
-import {useFonts} from "expo-font";
+import Animated, {useAnimatedRef} from "react-native-reanimated";
+import React, {PropsWithChildren} from "react";
 
 type Props = PropsWithChildren<{
   headerBackgroundColor? : boolean;
+  noPadding?: boolean;
 }>;
 
-export function Scrollable({children, headerBackgroundColor}: Props){
+export function Scrollable({children, headerBackgroundColor, noPadding}: Props){
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
   return(
-    <ThemedView style={[styles.container, headerBackgroundColor ? styles.modalBackground : null]}>
+    <ThemedView style={[styles.container, headerBackgroundColor ? styles.modalBackground : null, noPadding ? null : {padding:10} ]} >
       <Animated.ScrollView style={styles.content} ref={scrollRef} scrollEventThrottle={16}>
         {children}
       </Animated.ScrollView>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     fontFamily: "PixelifySans",
-    width: '100%'
+    width: '100%',
   },
   content: {
     flex: 1,

@@ -1,29 +1,19 @@
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import {Scrollable} from "@/components/Scrollable";
-import FastTranslator from "fast-mlkit-translate-text";
-import {useState} from "react";
+import AddingFoodModal from "@/components/caloriesJournal/addingFoodModal";
 
 export default function TabTwoScreen() {
-  const [translatedText, setTranslatedText] = useState("")
 
 
-  const translateInput = async (text: string)=> {
-    await FastTranslator.prepare({
-      source: 'Polish',
-      target: 'English',
-      downloadIfNeeded: true // set to false if you want to download mannually
-    }).then(() => console.log("Language data downloaded"));
-    await FastTranslator.translate(text).then(value => setTranslatedText(value))
-  }
-  return (
+    return (
     <Scrollable>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Dziennik kalorii</ThemedText>
-        <Text>Translated text: {translatedText}</Text>
       </ThemedView>
+      <AddingFoodModal></AddingFoodModal>
     </Scrollable>
   );
 }

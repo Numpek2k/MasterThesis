@@ -8,8 +8,6 @@ import * as LocalStorageKeys from '../constants/localStorageConst';
 import {getItemFor, storeData} from "@/helpers/storageHepler";
 import RNPickerSelect from 'react-native-picker-select';
 import CollapsibleView from "@/components/CollapsibleView";
-import FastTranslator from "fast-mlkit-translate-text";
-
 
 
 export default function firstTimeUseSettings({children} :PropsWithChildren){
@@ -126,7 +124,7 @@ export default function firstTimeUseSettings({children} :PropsWithChildren){
       }}>
       <View style={[styles.centeredView]}>
         <View style={styles.modalView}>
-          <Scrollable headerBackgroundColor = {true}>
+          <Scrollable headerBackgroundColor = {true} noPadding={true}>
             <ThemedText type="title" style={{color: 'black'}}>Ustawienia</ThemedText>
 
             <TextInput

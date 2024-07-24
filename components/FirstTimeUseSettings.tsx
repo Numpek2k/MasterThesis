@@ -104,8 +104,15 @@ export default function firstTimeUseSettings({children} :PropsWithChildren){
         break;
     }
 
-    await storeData(LocalStorageKeys.USER_DATA_TMR, TMR.toString())
-    await storeData(LocalStorageKeys.USER_DATA_BMR, BMR.toString())
+    let dailyCarbs = Math.round(TMR * 0.62 / 4);
+    let dailyFiber = Math.round(TMR * 0.18 / 4);
+    let dailyFats = Math.round(TMR * 0.20 / 7);
+
+    await storeData(LocalStorageKeys.USER_DATA_CALORIES_TMR, TMR.toString())
+    await storeData(LocalStorageKeys.USER_DATA_CALORIES_BMR, BMR.toString())
+    await storeData(LocalStorageKeys.USER_DAILY_CARBS_GRAMS, dailyCarbs.toString())
+    await storeData(LocalStorageKeys.USER_DAILY_FAT_GRAMS, dailyFats.toString())
+    await storeData(LocalStorageKeys.USER_DAILY_PROTEINS_GRAMS, dailyFiber.toString())
 
     console.log("TMR",TMR)
     console.log("BMR",BMR)

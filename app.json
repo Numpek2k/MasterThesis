@@ -25,6 +25,9 @@
         "android.permission.health.READ_EXERCISE"
       ],
       "package": "com.anonymous.OutrunTheZombiesR",
+      "config": {
+
+      },
       "minSdkVersion": 29
     },
     "web": {
@@ -35,6 +38,12 @@
     "plugins": [
       "expo-router",
       "expo-health-connect",
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/F77MinecraftRegular.ttf"]
+        }
+      ],
       [
         "expo-build-properties",
         {

@@ -1,4 +1,4 @@
-import {StyleSheet, View} from "react-native";
+import {Pressable, StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
 import {TextInput} from "react-native-paper";
 import {PropsWithChildren, useEffect, useRef, useState} from "react";
@@ -11,6 +11,7 @@ type NutritionProps = PropsWithChildren<{
   protein_g: number
   carbohydrates_total_g: number
   onServingSizeChange: (name: string, newSize: number) => void;
+  onAddToJournal: () => void;
 }>;
 
 export default function NutritionElement({
@@ -20,7 +21,8 @@ export default function NutritionElement({
   carbohydrates_total_g,
   fat_total_g,
   protein_g,
-  onServingSizeChange
+  onServingSizeChange,
+  onAddToJournal,
 }: NutritionProps){
 
   const [inputValue, setInputValue] = useState(serving_size_g.toString());
@@ -122,7 +124,19 @@ export default function NutritionElement({
         </View>
       </View>
       <View>
-
+        <Pressable
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? 'white' : '#323f93',
+            },
+            styles.button
+          ]}
+          onPress={() => {
+            onAddToJournal()
+          }}
+        >
+          <ThemedText style={{textAlign: 'center', marginHorizontal: 10}}>Dodaj</ThemedText>
+        </Pressable>
       </View>
     </View>
   )
@@ -151,5 +165,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
     // height:100
     // marginEnd: 18
-  }
+  },
+  button: {
+    marginTop: 10,
+    borderRadius: 20,
+    padding: 10,
+    alignItems: 'center',
+    // backgroundColor: '#323f93',
+  },
 })

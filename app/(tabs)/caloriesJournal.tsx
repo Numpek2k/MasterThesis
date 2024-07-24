@@ -1,19 +1,15 @@
 import {StyleSheet} from 'react-native';
-
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import {Scrollable} from "@/components/Scrollable";
-import AddingFoodModal from "@/components/caloriesJournal/addingFoodModal";
+import AddingFoodModal from "@/components/caloriesJournal/AddingFoodModal";
+import NutritionJournalComponent from "@/components/caloriesJournal/NutritionJournalComponent";
 
 export default function TabTwoScreen() {
 
 
     return (
     <Scrollable>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Dziennik kalorii</ThemedText>
-      </ThemedView>
       <AddingFoodModal></AddingFoodModal>
+      <NutritionJournalComponent></NutritionJournalComponent>
     </Scrollable>
   );
 }
@@ -24,10 +20,6 @@ const styles = StyleSheet.create({
     bottom: -90,
     left: -35,
     position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
   },
   reactLogo: {
     height: '100%',

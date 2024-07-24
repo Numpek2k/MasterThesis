@@ -14,6 +14,17 @@ export interface NutritionItem {
   [key: string]: any; // Additional properties that might be returned by the API
 }
 
+export interface NutritionSimpleItem {
+  name: string;
+  calories: number;
+  serving_size_g: number,
+  fat_total_g: number,
+  protein_g: number,
+  carbohydrates_total_g: number,
+  [key: string]: any; // Additional properties that might be returned by the API
+}
+
+
 export interface NutritionInfo {
   items: NutritionItem[];
 }

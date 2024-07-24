@@ -26,7 +26,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="caloriesJournal"
         options={{
-          title: 'Calories',
+          title: 'Kalorie',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'nutrition' : 'nutrition-outline'} color={color} />
           ),

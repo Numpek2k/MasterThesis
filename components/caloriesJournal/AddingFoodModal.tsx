@@ -2,17 +2,20 @@ import {TextInput} from "react-native-paper";
 import {ThemedText} from "@/components/ThemedText";
 import {CALORIES_NINJA_API_KEY} from "@/constants/apiKeys";
 import FastTranslator from "fast-mlkit-translate-text";
-import {NutritionInfo, NutritionItem, nutritionTestData} from "@/interfaces/nutritionInfo";
+import {NutritionInfo, NutritionItem, NutritionSimpleItem, nutritionTestData} from "@/interfaces/nutritionInfo";
 import {useEffect, useRef, useState} from "react";
-import {Alert, Modal, Pressable, View, StyleSheet} from "react-native";
+import {Modal, Pressable, StyleSheet, View} from "react-native";
 import {Scrollable} from "@/components/Scrollable";
-import NutritionElement from "@/components/caloriesJournal/nutritionElement";
+import NutritionElement from "@/components/caloriesJournal/NutritionElement";
+import {NutritionJournal} from "@/interfaces/nutritionJournal";
+import {getItemFor, storeData} from "@/helpers/storageHepler";
+import * as LocalStorageKeys from "@/constants/localStorageConst";
 
 export default function AddingFoodModal () {
   const [modalVisible, setModalVisible] = useState(false)
-  const [translatedText, setTranslatedText] = useState("")
   const [searchInput, setSearchInput] = useState("")
   const [nutritionInfo, setNutritionInfo] = useState<NutritionInfo | null>(null);
+  const [nutritionJournal, setNutritionJournal] = useState<NutritionJournal>({ journal: [] });
 
   const typingTimeout = useRef<NodeJS.Timeout | null>(null);
   const [lastTypingTime, setLastTypingTime] = useState(Date.now());
@@ -73,7 +76,6 @@ export default function AddingFoodModal () {
       downloadIfNeeded: true})
       // .then(() => console.log("Language data downloaded"));
     const translated = await FastTranslator.translate(text);
-    setTranslatedText(translated);
 
     return translated
   }
@@ -86,9 +88,9 @@ export default function AddingFoodModal () {
   const handleInputEnd = async () => {
     // console.log('User stopped typing:', searchInput);
     if(searchInput) {
-      await translateInput(searchInput).then((val) => console.log(val))
-      // fetchNutritionInfo(translatedText);
-      mockFetchNutritionInfo()
+      const translated = await translateInput(searchInput);
+      await fetchNutritionInfo(translated);
+      // mockFetchNutritionInfo()
     }
     else{
       setNutritionInfo(null);
@@ -126,23 +128,55 @@ export default function AddingFoodModal () {
     }
   };
 
-  useEffect(() => {
-    if (typingTimeout.current) {
-      clearTimeout(typingTimeout.current);
+  const addItemToJournal = async (item: NutritionSimpleItem) => {
+    const today = new Date().toISOString().split('T')[0];
+    let updatedJournal: NutritionJournal;
+    const existingDay = nutritionJournal.journal.find(day => day.date === today);
+    if (existingDay) {
+      existingDay.items.push(item);
+      updatedJournal = {
+        journal: nutritionJournal.journal.map(day =>
+          day.date === today ? existingDay : day
+        )
+      };
+    } else {
+      updatedJournal = {
+        journal: [...nutritionJournal.journal, { date: today, items: [item] }]
+      };
     }
+    console.log("im here", item)
+    setNutritionJournal(updatedJournal);
+    await storeData(LocalStorageKeys.USER_CALORIES_JOURNAL, JSON.stringify(updatedJournal));
+  };
 
-    typingTimeout.current = setTimeout(() => {
-      if (Date.now() - lastTypingTime >= 300) {
-        handleInputEnd();
-      }
-    }, 300);
+  // useEffect(() => {
+  //   if (typingTimeout.current) {
+  //     clearTimeout(typingTimeout.current);
+  //   }
+  //
+  //   typingTimeout.current = setTimeout(() => {
+  //     if (Date.now() - lastTypingTime >= 300) {
+  //       handleInputEnd();
+  //     }
+  //   }, 300);
+  //
+  //   return () => {
+  //     if (typingTimeout.current) {
+  //       clearTimeout(typingTimeout.current);
+  //     }
+  //   };
+  // }, [searchInput]);
 
-    return () => {
-      if (typingTimeout.current) {
-        clearTimeout(typingTimeout.current);
+  useEffect(() => {
+    const fetchJournal = async () => {
+      const journalString = await getItemFor(LocalStorageKeys.USER_CALORIES_JOURNAL);
+      if (journalString) {
+        setNutritionJournal(JSON.parse(journalString));
       }
     };
-  }, [searchInput]);
+
+    fetchJournal();
+  }, []);
 
   return(
     <View>
@@ -158,7 +192,6 @@ export default function AddingFoodModal () {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={[styles.centeredView]}>
@@ -171,7 +204,8 @@ export default function AddingFoodModal () {
                   style={{marginTop: 10}}
                   mode = 'outlined'
                   label={"Znajdź składnik/posiłek"}
-                  onChangeText={(text) => handleInputChange(text)}
+                  onChangeText={(text) => setSearchInput(text)}
+                  onSubmitEditing={handleInputEnd}
                   value={searchInput}
                   activeOutlineColor={'#002c8a'}
                 />
@@ -188,12 +222,13 @@ export default function AddingFoodModal () {
                       protein_g={item.protein_g}
                       key={index}
                       onServingSizeChange={handleServingSizeChange}
+                      onAddToJournal={() => addItemToJournal(item)}
                     >
                     </NutritionElement>
+
                   ))}
                 </View>
               )}
-
             </Scrollable>
           </View>
         </View>

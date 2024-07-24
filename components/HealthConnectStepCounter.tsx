@@ -75,7 +75,6 @@ export function HealthConnectStepCounter() {
         checkAvailability()
         // requestSamplePermissions()
         aggregateLast24HoursSteps()
-        // requestSamplePermissions()
         // const interval = setInterval(() => {
         //     aggregateLast24HoursSteps()
         // }, 10 * 1000);

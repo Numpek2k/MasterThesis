@@ -28,11 +28,9 @@ export default function RootLayout() {
         const hasLaunched = await getItemFor(HAS_LAUNCHED);
         if(hasLaunched){
           setHasLaunched(true);
-          console.log(hasLaunched)
         }
         else {
           await storeData(HAS_LAUNCHED, "true");
-          console.log("hasLaunched set to true")
         }
       };
 

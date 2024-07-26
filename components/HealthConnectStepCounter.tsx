@@ -20,7 +20,6 @@ export function HealthConnectStepCounter() {
 
     const initializeHealthConnect = async () => {
         const result = await initialize();
-        // console.log({ result });
     };
 
     const checkAvailability = async () => {

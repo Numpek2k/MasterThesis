@@ -24,6 +24,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="activityJournal"
+        options={{
+          title: 'Aktywność',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'stats-chart' : 'stats-chart-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="caloriesJournal"
         options={{
           title: 'Kalorie',

@@ -1,27 +1,28 @@
 export interface NutritionItem {
-  name: string;
-  calories: number;
-  serving_size_g: number,
-  fat_total_g: number,
-  fat_saturated_g: number,
-  protein_g: number,
-  sodium_mg: number,
-  potassium_mg: number,
-  cholesterol_mg: number,
-  carbohydrates_total_g: number,
-  fiber_g: number,
+  name: string
+  calories: number
+  serving_size_g: number
+  fat_total_g: number
+  fat_saturated_g: number
+  protein_g: number
+  sodium_mg: number
+  potassium_mg: number
+  cholesterol_mg: number
+  carbohydrates_total_g: number
+  fiber_g: number
   sugar_g: number
-  [key: string]: any; // Additional properties that might be returned by the API
+  [key: string]: any
 }
 
 export interface NutritionSimpleItem {
-  name: string;
-  calories: number;
-  serving_size_g: number,
-  fat_total_g: number,
-  protein_g: number,
-  carbohydrates_total_g: number,
-  [key: string]: any; // Additional properties that might be returned by the API
+  id?: string
+  name: string
+  calories: number
+  serving_size_g: number
+  fat_total_g: number
+  protein_g: number
+  carbohydrates_total_g: number
+  [key: string]: any
 }
 
 

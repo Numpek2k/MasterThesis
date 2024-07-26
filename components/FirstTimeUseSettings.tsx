@@ -114,9 +114,6 @@ export default function firstTimeUseSettings({children} :PropsWithChildren){
     await storeData(LocalStorageKeys.USER_DAILY_FAT_GRAMS, dailyFats.toString())
     await storeData(LocalStorageKeys.USER_DAILY_PROTEINS_GRAMS, dailyFiber.toString())
 
-    console.log("TMR",TMR)
-    console.log("BMR",BMR)
-
   }
 
 

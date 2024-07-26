@@ -1,47 +1,35 @@
+import {PropsWithChildren} from "react";
+import {ActivityItem} from "@/interfaces/activityJournal";
 import {Pressable, StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
-import {PropsWithChildren} from "react";
-import {NutritionSimpleItem} from "@/interfaces/nutritionInfo";
+import {ActivityLabels, PhysicalActivities, PhysicalActivityKey} from "@/constants/physicalActivities";
 
-type NutritionJournalProp = PropsWithChildren<{
-  item: NutritionSimpleItem
+type ActivityJournalProp = PropsWithChildren<{
+  item: ActivityItem
   onDeleteJournalElement: () => void;
   showDeleteButton: boolean;
 }>
 
-export default function JournalElement({
+export default function ActivityElement({
   item,
   onDeleteJournalElement,
   showDeleteButton
-  }: NutritionJournalProp){
+  }: ActivityJournalProp){
 
   return(
     <View style={styles.container}>
-      <ThemedText style={{color:'black', marginBottom: 10, textTransform:'capitalize'}} type='subtitle' >{item.name}</ThemedText>
-      <ThemedText style={{color:'grey', marginBottom: 10}} type='subtitle' >{item.serving_size_g}g</ThemedText>
+      <ThemedText style={{color:'black', marginBottom: 10, textTransform:'capitalize'}} type='subtitle' >{PhysicalActivities[item.type].label}</ThemedText>
       <View style={styles.itemsInRow}>
         <View style={styles.statsContainer}>
           <View style={styles.itemsInRow}>
-            <View style={styles.nutritionMacro}>
-              <ThemedText style={styles.macroText}>
-                Kcal{"\n"}{item.calories}
+            <View style={styles.activityDetail}>
+              <ThemedText style={styles.activityText}>
+                {ActivityLabels[item.type]}{"\n"}{item.amount}
               </ThemedText>
             </View>
-            <View style={styles.nutritionMacro}>
-              <ThemedText style={styles.macroText}>
-                Biał.{"\n"}{item.protein_g}
-              </ThemedText>
-            </View>
-
-            <View style={styles.nutritionMacro}>
-              <ThemedText style={styles.macroText}>
-                Tł.{"\n"}{item.fat_total_g}
-              </ThemedText>
-            </View>
-
-            <View style={styles.nutritionMacro}>
-              <ThemedText style={styles.macroText}>
-                Węgl.{"\n"}{item.carbohydrates_total_g}
+            <View style={styles.activityDetail}>
+              <ThemedText style={styles.activityText}>
+                Punkty{"\n"}{item.points}
               </ThemedText>
             </View>
           </View>
@@ -98,16 +86,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     alignItems: 'center',
+    // backgroundColor: '#323f93',
   },
-  buttonClose: {
-    backgroundColor: '#323f93',
-  },
-  nutritionMacro: {
-    width: "25%",
+  activityDetail: {
+    width: "50%",
     alignItems: 'center',
     justifyContent: 'center',
   },
-  macroText: {
+  activityText: {
     color: 'black',
     textAlign: 'center', // Ensure text is centered horizontally
   },

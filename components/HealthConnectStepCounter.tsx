@@ -10,7 +10,6 @@ import {ThemedText} from "@/components/ThemedText";
 import {getItemFor, storeData} from "@/helpers/storageHepler";
 import * as LocalStorageKeys from "@/constants/localStorageConst"
 import {ActivityJournal} from "@/interfaces/activityJournal";
-import {convertCodeUnitToBytes} from "@zxing/text-encoding/es2015/coders/utf-16/converCodeUnitToBytes";
 import {useFocusEffect} from "@react-navigation/native";
 
 const getTodayDate = (): Date => {

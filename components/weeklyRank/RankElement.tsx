@@ -1,9 +1,7 @@
-import {StyleSheet, View, Image} from "react-native";
-import {ActivityJournal, UpdateJournalFunction} from "@/interfaces/activityJournal";
+import {Image, StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
 import ProgressBar from "@/components/ProgressBar";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {ThemedView} from "@/components/ThemedView";
 
 interface RankElementProps {
   item: WeeklyRankItem;

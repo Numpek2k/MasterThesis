@@ -7,8 +7,6 @@ import {ActivityLabels, PhysicalActivities, PhysicalActivityKey} from "@/constan
 import RNPickerSelect from "react-native-picker-select";
 import {ActivityItem, ActivityJournal, UpdateJournalFunction} from "@/interfaces/activityJournal";
 import uuid from 'react-native-uuid';
-import {storeData} from "@/helpers/storageHepler";
-import * as LocalStorageKeys from '@/constants/localStorageConst'
 
 interface AddingActivityModalProps {
   activityJournal: ActivityJournal;

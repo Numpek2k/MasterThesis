@@ -8,7 +8,6 @@ import ActivityElement from "@/components/activityJournal/ActivityElement";
 import ProgressBar from "@/components/ProgressBar";
 import {getItemFor} from "@/helpers/storageHepler";
 import * as LocalStorageKeys from "@/constants/localStorageConst"
-import {set} from "yaml/dist/schema/yaml-1.1/set";
 
 interface ActivityJournalComponentProps {
   activityJournal: ActivityJournal;

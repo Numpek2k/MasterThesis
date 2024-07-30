@@ -4,10 +4,8 @@ import React from "react";
 import {Scrollable} from "@/components/Scrollable";
 import {ThemedView} from "@/components/ThemedView";
 import {ThemedText} from "@/components/ThemedText";
-import {EventEmitter} from "events"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalStorageKeys from "@/constants/localStorageConst"
-import {aggregateRecord} from "react-native-health-connect";
 
 export default function HomeScreen() {
 

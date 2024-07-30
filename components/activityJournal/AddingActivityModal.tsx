@@ -2,13 +2,13 @@ import {Modal, Pressable, StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
 import {Scrollable} from "@/components/Scrollable";
 import {TextInput} from "react-native-paper";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {ActivityLabels, PhysicalActivities, PhysicalActivityKey} from "@/constants/physicalActivities"
 import RNPickerSelect from "react-native-picker-select";
-import {getItemFor, storeData} from "@/helpers/storageHepler";
-import * as LocalStorageKeys from "@/constants/localStorageConst";
 import {ActivityItem, ActivityJournal, UpdateJournalFunction} from "@/interfaces/activityJournal";
 import uuid from 'react-native-uuid';
+import {storeData} from "@/helpers/storageHepler";
+import * as LocalStorageKeys from '@/constants/localStorageConst'
 
 interface AddingActivityModalProps {
   activityJournal: ActivityJournal;
@@ -33,11 +33,26 @@ export default function AddingActivityModal({ activityJournal, updateJournal }: 
     const today = new Date().toISOString().split('T')[0];
     const updatedJournal = { ...activityJournal };
 
+    const calculatePoints = (): number => {
+      switch (selectedActivity) {
+        case "RUNNING":
+          return PhysicalActivities[selectedActivity].ratio * 1000 * parseInt(activityAmount)
+        case "CYCLING":
+          return PhysicalActivities[selectedActivity].ratio * 1000 * parseInt(activityAmount)
+        case "CLIMBING":
+          return PhysicalActivities[selectedActivity].ratio * 100 * parseInt(activityAmount)
+        case "SWIMMING":
+          return PhysicalActivities[selectedActivity].ratio * 100 * parseInt(activityAmount)
+
+      }
+      return 0
+    }
+
     const item: ActivityItem = {
       id: uuid.v4().toString(),
       type: selectedActivity,
       amount: parseInt(activityAmount),
-      points: 69
+      points: calculatePoints()
     };
 
     const existingDay = updatedJournal.journal.find(day => day.date === today);
@@ -48,6 +63,7 @@ export default function AddingActivityModal({ activityJournal, updateJournal }: 
     }
 
     updateJournal(updatedJournal);
+    // await storeData(LocalStorageKeys.USER_ACTIVITIES_JOURNAL, JSON.stringify(updatedJournal)).then(() => console.log("saved"))
     setModalVisible(false);  // Close the modal after adding the item
   };
 

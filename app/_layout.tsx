@@ -9,10 +9,10 @@ import AnimatedMainView from "@/components/AnimatedMainView";
 import FirstTimeUseSettings from "@/components/FirstTimeUseSettings";
 import {StyleSheet} from "react-native";
 import {getItemFor, storeData} from "@/helpers/storageHepler";
+import * as LocalStorageKeys from "@/constants/localStorageConst";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-const HAS_LAUNCHED = 'HAS_LAUNCHED'
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -25,12 +25,13 @@ export default function RootLayout() {
     if (loaded) {
       SplashScreen.hideAsync();
       const getData = async () => {
-        const hasLaunched = await getItemFor(HAS_LAUNCHED);
+        const hasLaunched = await getItemFor(LocalStorageKeys.HAS_LAUNCHED);
         if(hasLaunched){
           setHasLaunched(true);
         }
         else {
-          await storeData(HAS_LAUNCHED, "true");
+          await storeData(LocalStorageKeys.HAS_LAUNCHED, "true");
+          await storeData(LocalStorageKeys.FIRST_LAUNCHED_DATE, new Date().toISOString().split('T')[0])
         }
       };
 

@@ -1,0 +1,15 @@
+export const WeeklyRankBoard: WeeklyRankItem[] = [
+  {title: 'Nieśmiały Dzik', end_point: 10000, start_point: 0},
+  {title: 'Młody Dzik', end_point: 20000, start_point:10000},
+  {title: 'Początkujący Dzik', end_point: 30000, start_point:20000},
+  {title: 'Dzik Entuzjasta', end_point: 40000, start_point:30000},
+  {title: 'Dzik Zapałowiec', end_point: 50000, start_point:40000},
+  {title: 'Waleczny Dzik', end_point: 65000, start_point:50000},
+  {title: 'Zwinny Dzik', end_point: 80000, start_point:65000},
+  {title: 'Witalny Dzik', end_point: 100000, start_point:80000},
+  {title: 'Atletyczny Dzik', end_point: 120000, start_point:100000},
+  {title: 'Turbo-dzik', end_point: 140000, start_point:120000},
+  {title: 'Dzik Profesjonalista', end_point: 160000, start_point:140000},
+  {title: 'Dzik Olimpijczyk', end_point: 180000, start_point:160000},
+  {title: 'Dzik Rakieta', end_point: 200000, start_point:180000},
+]

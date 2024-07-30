@@ -5,6 +5,10 @@ import {ThemedText} from "@/components/ThemedText";
 import {useEffect, useState} from "react";
 import {ActivityJournal, UpdateJournalFunction} from "@/interfaces/activityJournal";
 import ActivityElement from "@/components/activityJournal/ActivityElement";
+import ProgressBar from "@/components/ProgressBar";
+import {getItemFor} from "@/helpers/storageHepler";
+import * as LocalStorageKeys from "@/constants/localStorageConst"
+import {set} from "yaml/dist/schema/yaml-1.1/set";
 
 interface ActivityJournalComponentProps {
   activityJournal: ActivityJournal;
@@ -20,6 +24,7 @@ export default function ActivityJournalComponent({
   const [currentDateIndex, setCurrentDateIndex] = useState(0);
   const [reachedLeft, setReachedLeft] = useState(true);
   const [reachedRight, setReachedRight] = useState(true);
+  const [stepDailyTarget, setStepDailyTarget] = useState(0);
   const theme = useColorScheme() ?? 'light';
   const todayDate = new Date().toISOString().split('T')[0];
   let currentDay = activityJournal.journal[currentDateIndex];
@@ -48,6 +53,12 @@ export default function ActivityJournalComponent({
     updateJournal(updatedJournal);
   };
 
+  const getMaxDailySteps = async () => {
+    const max = await getItemFor(LocalStorageKeys.USER_DATA_DAILY_STEP_TARGET)
+    if(max)
+      setStepDailyTarget(parseInt(max))
+  }
+
   const handlePreviousDate = () => {
     if (currentDateIndex > 0) {
       setCurrentDateIndex(currentDateIndex - 1);
@@ -58,6 +69,10 @@ export default function ActivityJournalComponent({
     if (currentDateIndex < activityJournal.journal.length - 1) {
       setCurrentDateIndex(currentDateIndex + 1);
     }
+  };
+
+  const calculateProgress = (sum: number, max: number) => {
+    return max > 0 ? sum / max : 0;
   };
 
   useEffect(() => {
@@ -71,6 +86,10 @@ export default function ActivityJournalComponent({
     setReachedLeft(currentDateIndex === 0);
     setReachedRight(currentDateIndex === journalLength - 1 || journalLength < 0);
   }, [currentDateIndex, activityJournal.journal.length]);
+
+  useEffect(() => {
+    getMaxDailySteps()
+  }, []);
 
   if (loading) {
     return (
@@ -106,6 +125,16 @@ export default function ActivityJournalComponent({
             color={theme === 'light' ? Colors.light.icon : Colors.dark.icon}
           />
         </Pressable>
+      </View>
+
+      <ThemedText style={{ marginTop: 10 }}>Kroki: {activityJournal.journal[currentDateIndex].dailySteps}</ThemedText>
+      <View style={{ flexDirection: 'row' }}>
+        <ThemedText style={{ width: '20%', textAlign: 'center' }}>0</ThemedText>
+        <ProgressBar
+          progress={calculateProgress(activityJournal.journal[currentDateIndex].dailySteps,stepDailyTarget)}
+          bgColor='#FFA500'
+        />
+        <ThemedText style={{ width: '20%', textAlign: 'center' }}>{stepDailyTarget}</ThemedText>
       </View>
 
       <View style={styles.journalElementContainer}>

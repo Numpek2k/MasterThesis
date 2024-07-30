@@ -1,9 +1,9 @@
-import { Tabs } from 'expo-router';
+import {Tabs} from 'expo-router';
 import React from 'react';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import {TabBarIcon} from '@/components/navigation/TabBarIcon';
+import {Colors} from '@/constants/Colors';
+import {useColorScheme} from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -18,8 +18,8 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarIcon: ({color, focused}) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color}/>
           ),
         }}
       />
@@ -27,8 +27,8 @@ export default function TabLayout() {
         name="activityJournal"
         options={{
           title: 'Aktywność',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'stats-chart' : 'stats-chart-outline'} color={color} />
+          tabBarIcon: ({color, focused}) => (
+            <TabBarIcon name={focused ? 'stats-chart' : 'stats-chart-outline'} color={color}/>
           ),
         }}
       />
@@ -36,20 +36,20 @@ export default function TabLayout() {
         name="caloriesJournal"
         options={{
           title: 'Kalorie',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'nutrition' : 'nutrition-outline'} color={color} />
+          tabBarIcon: ({color, focused}) => (
+            <TabBarIcon name={focused ? 'nutrition' : 'nutrition-outline'} color={color}/>
           ),
         }}
       />
-        <Tabs.Screen
-            name="explore1"
-            options={{
-                title: 'Explore',
-                tabBarIcon: ({ color, focused }) => (
-                    <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-                ),
-            }}
-        />
+      <Tabs.Screen
+        name="weeklyRank"
+        options={{
+          title: 'Ranga',
+          tabBarIcon: ({color, focused}) => (
+            <TabBarIcon name={focused ? 'medal' : 'medal-outline'} color={color}/>
+          ),
+        }}
+      />
     </Tabs>
   );
 }

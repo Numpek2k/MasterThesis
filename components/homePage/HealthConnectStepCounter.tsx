@@ -16,7 +16,12 @@ const getTodayDate = (): Date => {
   return new Date();
 };
 
-export function HealthConnectStepCounter() {
+interface HealthConnectProp {
+  onTodayStepsUpdate: (steps: number) => void;
+}
+
+
+export function HealthConnectStepCounter({ onTodayStepsUpdate}: HealthConnectProp) {
 
   const [todaySteps, setTodaySteps] = useState<number>(0);
   const [activityJournal, setActivityJournal] = useState<ActivityJournal>({journal: []});
@@ -46,12 +51,20 @@ export function HealthConnectStepCounter() {
     try {
       const lastUpdateDateString = await getItemFor(LocalStorageKeys.LAST_ACTIVITY_JOURNAL_UPDATE);
       const firstLaunchDateString = await getItemFor(LocalStorageKeys.FIRST_LAUNCHED_DATE);
+      const userStepTarget = await getItemFor(LocalStorageKeys.USER_DATA_DAILY_STEP_TARGET);
+      let currentUserStreak = 0
+      await getItemFor(LocalStorageKeys.USER_STREAK).then((res) => {
+        if(res)
+          currentUserStreak = parseInt(res)
+        else
+          currentUserStreak = 0
+      })
 
       const lastUpdateDate = lastUpdateDateString ? new Date(lastUpdateDateString) : new Date(firstLaunchDateString || 0);
       const todayDate = new Date();
 
       const currentDate = getStartOfDay(lastUpdateDate);
-      while (currentDate <= getStartOfDay(todayDate)) {
+      while (currentDate < getStartOfDay(todayDate)) {
         const startTime = getStartOfDay(currentDate).toISOString();
         const endTime = getEndOfDay(currentDate).toISOString();
 
@@ -63,7 +76,7 @@ export function HealthConnectStepCounter() {
             endTime: endTime,
           },
         });
-
+        let dailyPoints = 0;
         const stepsCount = result.COUNT_TOTAL;
         const dateString = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1, 0, 0, 0).toISOString().split('T')[0];
         const dayEntry = activityJournal.journal.find(day => day.date === dateString);
@@ -76,15 +89,22 @@ export function HealthConnectStepCounter() {
             items: [],
           });
         }
+        activityJournal.journal.find(day => day.date === dateString)?.items.forEach(item => {
+          dailyPoints += item.points;
+        })
+        if(userStepTarget && (dailyPoints+stepsCount) >= parseInt(userStepTarget))
+          currentUserStreak += 1
+        else
+          currentUserStreak = 0
+        // console.log(currentDate,currentUserStreak,dailyPoints,stepsCount)
         currentDate.setDate(currentDate.getDate() + 1)
       }
 
       // activityJournal.journal.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-      // console.log(activityJournal)
+      // console.log(JSON.stringify(activityJournal))
       await storeData(LocalStorageKeys.USER_ACTIVITIES_JOURNAL, JSON.stringify(activityJournal));
       await storeData(LocalStorageKeys.LAST_ACTIVITY_JOURNAL_UPDATE, todayDate.toISOString());
-
-
+      await storeData(LocalStorageKeys.USER_STREAK,currentUserStreak.toString())
     } catch (error) {
       console.error('Failed to update daily steps', error);
     } finally {
@@ -127,7 +147,7 @@ export function HealthConnectStepCounter() {
   const aggregateTodaySteps = async () => {
     const todayStart = getStartOfDay(getTodayDate()).toISOString();
     const todayEnd = getEndOfDay(getTodayDate()).toISOString();
-
+    // console.log(todayStart,todayEnd)
     try {
       const result = await aggregateRecord({
         recordType: 'Steps',
@@ -136,13 +156,15 @@ export function HealthConnectStepCounter() {
           startTime: todayStart,
           endTime: todayEnd,
         },
-      });
+      })
 
       const stepsCount = result.COUNT_TOTAL;
       setTodaySteps(stepsCount);
+      onTodayStepsUpdate(stepsCount);
 
       const todayDateString = getStartOfDay(new Date(getTodayDate().setDate(getTodayDate().getDate() + 1))).toISOString().split('T')[0];
       const todayEntry = activityJournal.journal.find(day => day.date === todayDateString);
+      console.log(JSON.stringify(todayEntry))
       if (todayEntry) {
         todayEntry.dailySteps = stepsCount;
       } else {
@@ -155,11 +177,11 @@ export function HealthConnectStepCounter() {
 
       // Sort the journal by date before storing it
 
-      activityJournal.journal.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      // activityJournal.journal.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
       await storeData(LocalStorageKeys.USER_ACTIVITIES_JOURNAL, JSON.stringify(activityJournal));
     } catch (error) {
-      console.error('Failed to aggregate today\'s steps', error);
+      console.error('Failed to aggregateTodaySteps today\'s steps', error);
     }
   };
 

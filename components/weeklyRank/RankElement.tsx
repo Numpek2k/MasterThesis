@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   logo: {
-    width: 100,
+    width: '30%',
     height: 100
   }
 })

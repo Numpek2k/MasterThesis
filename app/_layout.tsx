@@ -10,6 +10,7 @@ import FirstTimeUseSettings from "@/components/FirstTimeUseSettings";
 import {StyleSheet} from "react-native";
 import {getItemFor, storeData} from "@/helpers/storageHepler";
 import * as LocalStorageKeys from "@/constants/localStorageConst";
+import {store} from "expo-router/build/global-state/router-store";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -31,6 +32,7 @@ export default function RootLayout() {
         }
         else {
           await storeData(LocalStorageKeys.HAS_LAUNCHED, "true");
+          await storeData(LocalStorageKeys.USER_HEALTH, '100')
           await storeData(LocalStorageKeys.FIRST_LAUNCHED_DATE, new Date().toISOString().split('T')[0])
         }
       };

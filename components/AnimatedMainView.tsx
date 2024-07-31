@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     left: 70
   },
   character: {
-    top: '74%',
+    top: '72%',
     right: '-75%'
   },
 });

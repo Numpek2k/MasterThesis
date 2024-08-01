@@ -4,15 +4,19 @@ import {ThemedText} from "@/components/ThemedText";
 import {useEffect, useState} from "react";
 import {getItemFor} from "@/helpers/storageHepler";
 import * as LocalStorageKeys from '@/constants/localStorageConst'
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface UserInfoProps {
   userSteps: number
+  streakReset: boolean
+  updated: boolean
 }
 
-export default function UserInformation({userSteps}: UserInfoProps) {
+export default function UserInformation({userSteps,streakReset,updated}: UserInfoProps) {
   const [userStepTarget, setUserStepTarget] = useState(0)
   const [username, setUsername] = useState('')
   const [userHealth, setUserHealth] = useState('')
+  const [userStreak, setUserStreak] = useState('')
 
   const calculateProgress = (sum: number, max: number) => {
     return max > 0 ? sum / max : 0;
@@ -31,11 +35,19 @@ export default function UserInformation({userSteps}: UserInfoProps) {
       if (result)
         setUserHealth(result)
     })
+    getItemFor(LocalStorageKeys.USER_STREAK).then((result) => {
+      if (result)
+        setUserStreak(result)
+    })
   }
 
   useEffect(() => {
     fetchInitialData()
   }, []);
+
+  useEffect(() => {
+    fetchInitialData()
+  }, [streakReset,updated]);
 
   return (
     <View style={styles.container}>
@@ -74,6 +86,25 @@ export default function UserInformation({userSteps}: UserInfoProps) {
           </ThemedText>
         </View>
       </View>
+      <View style={styles.container}>
+        <ThemedText>Twój aktualny streak:</ThemedText>
+        {parseInt(userStreak) > 0 &&
+            <View style={styles.logo}>
+                <Image
+                    source={require('@/assets/images/streak-flame.png')}
+                    style={{
+                      width: parseInt(userStreak) * 12,
+                      height: parseInt(userStreak) * 12,
+                      resizeMode: 'contain',
+                      maxHeight: 120,
+                      maxWidth: 120
+                    }}
+                    resizeMethod={'auto'}
+                />
+            </View>
+        }
+        <ThemedText>{userStreak} {parseInt(userStreak) == 1 ? 'dzień' : 'dni'}</ThemedText>
+      </View>
     </View>
   )
 }
@@ -104,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     alignItems: 'center',
-    // backgroundColor: '#323f93',
+    // backgroundColor: '#4656cd',
   },
   activityDetail: {
     width: "50%",
@@ -112,11 +143,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   activityText: {
-    width:'20%',
+    width: '20%',
     textAlign: 'center',
   },
   logo: {
     width: '30%',
-    height: 100
+    maxHeight: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })

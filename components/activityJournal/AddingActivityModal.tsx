@@ -118,7 +118,7 @@ export default function AddingActivityModal({ activityJournal, updateJournal }: 
             <Pressable
               style={({pressed}) => [
                 {
-                  backgroundColor: pressed ? 'white' : '#323f93',
+                  backgroundColor: pressed ? 'white' : '#4656cd',
                 },
                 styles.button
               ]}
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     buttonClose: {
-      backgroundColor: '#323f93',
+      backgroundColor: '#4656cd',
     },
     centeredView: {
       flex: 1,

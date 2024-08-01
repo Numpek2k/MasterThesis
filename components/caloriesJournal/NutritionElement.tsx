@@ -127,7 +127,7 @@ export default function NutritionElement({
         <Pressable
           style={({pressed}) => [
             {
-              backgroundColor: pressed ? 'white' : '#323f93',
+              backgroundColor: pressed ? 'white' : '#4656cd',
             },
             styles.button
           ]}
@@ -171,6 +171,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     alignItems: 'center',
-    // backgroundColor: '#323f93',
+    // backgroundColor: '#4656cd',
   },
 })

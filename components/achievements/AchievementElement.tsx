@@ -1,20 +1,17 @@
 import {Image, StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
 import ProgressBar from "@/components/ProgressBar";
+import {Achievement} from "@/interfaces/achievement";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-interface RankElementProps {
-  item: WeeklyRankItem;
-  sumPoints: number
+interface AchievementElementProps {
+  item: Achievement;
 }
 
-export default function RankElement({item,sumPoints}: RankElementProps) {
 
-  const calculateProgress = (sum: number, max: number) => {
-    return max > 0 ? sum / max : 0;
-  };
+export default function AchievementElement({item} : AchievementElementProps){
 
-  if(sumPoints < item.start_point)
+  if(!item.completed)
     return (
       <View style={[styles.container,{backgroundColor: 'grey'}]}>
         <Ionicons
@@ -25,39 +22,24 @@ export default function RankElement({item,sumPoints}: RankElementProps) {
       </View>
     )
 
-
-  return (
+  return(
     <View style={styles.container}>
       <View style={styles.itemsInRow}>
         <View style={styles.logo}>
           <Image
             style={{width: "100%", height: "100%", resizeMode: "contain"}}
-            source={require('@/assets/images/boar.png')}
+            source={require('@/assets/images/cup.png')}
             resizeMethod={"auto"}
           />
         </View>
         <View style={styles.statsContainer}>
-          <ThemedText style={{color:'black'}}>{item.title}</ThemedText>
-          <View style={[styles.itemsInRow,styles.inputContainer]}>
-            <View>
-              <ThemedText style={styles.activityText}>{item.start_point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\n')}</ThemedText>
-            </View>
-
-            <ProgressBar
-              progress={calculateProgress(sumPoints, item.end_point)}
-              bgColor={'yellow'}/>
-
-            <View>
-              <ThemedText style={styles.activityText}>{item.end_point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\n')}</ThemedText>
-            </View>
-          </View>
-
+          <ThemedText style={{color:'black'}}>{item.name}</ThemedText>
+          <ThemedText style={{color:'black'}}>{item.description}</ThemedText>
         </View>
       </View>
     </View>
   )
 }
-
 
 const styles = StyleSheet.create({
   container: {

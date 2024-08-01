@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonClose: {
-    backgroundColor: '#323f93',
+    backgroundColor: '#4656cd',
   },
   centeredView: {
     flex: 1,

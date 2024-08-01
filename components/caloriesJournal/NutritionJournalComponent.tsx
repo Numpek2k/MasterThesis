@@ -170,7 +170,7 @@ export default function NutritionJournalComponent({ nutritionJournal, updateJour
         <ThemedText style={{ width: '20%', textAlign: 'center' }}>0</ThemedText>
         <ProgressBar
           progress={calculateProgress(dailyCaloriesSum, maxCalories)}
-          bgColor='#D3D3D3'
+          bgColor='#808080'
         />
         <ThemedText style={{ width: '20%', textAlign: 'center' }}>{maxCalories}</ThemedText>
       </View>

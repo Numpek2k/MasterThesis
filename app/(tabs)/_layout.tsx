@@ -50,6 +50,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="achievments"
+        options={{
+          title: 'Osiągnięcia',
+          tabBarIcon: ({color, focused}) => (
+            <TabBarIcon name={focused ? 'pricetag' : 'pricetag-outline'} color={color}/>
+          ),
+        }}
+      />
     </Tabs>
   );
 }

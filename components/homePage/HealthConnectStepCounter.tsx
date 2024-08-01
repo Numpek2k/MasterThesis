@@ -11,6 +11,9 @@ import {getItemFor, storeData} from "@/helpers/storageHepler";
 import * as LocalStorageKeys from "@/constants/localStorageConst"
 import {ActivityJournal} from "@/interfaces/activityJournal";
 import {useFocusEffect} from "@react-navigation/native";
+import {Modal, Pressable, StyleSheet, View} from "react-native";
+import {Scrollable} from "@/components/Scrollable";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const getTodayDate = (): Date => {
   return new Date();
@@ -18,14 +21,17 @@ const getTodayDate = (): Date => {
 
 interface HealthConnectProp {
   onTodayStepsUpdate: (steps: number) => void;
+  onStreakReset: () => void;
+  onUpdate: () => void;
 }
 
 
-export function HealthConnectStepCounter({ onTodayStepsUpdate}: HealthConnectProp) {
+export function HealthConnectStepCounter({ onTodayStepsUpdate, onStreakReset,onUpdate}: HealthConnectProp) {
 
   const [todaySteps, setTodaySteps] = useState<number>(0);
   const [activityJournal, setActivityJournal] = useState<ActivityJournal>({journal: []});
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false)
 
   const initializeHealthConnect = async () => {
     const result = await initialize();
@@ -52,6 +58,12 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate}: HealthConnectPro
       const lastUpdateDateString = await getItemFor(LocalStorageKeys.LAST_ACTIVITY_JOURNAL_UPDATE);
       const firstLaunchDateString = await getItemFor(LocalStorageKeys.FIRST_LAUNCHED_DATE);
       const userStepTarget = await getItemFor(LocalStorageKeys.USER_DATA_DAILY_STEP_TARGET);
+      let userHealth = 0
+      await getItemFor(LocalStorageKeys.USER_HEALTH).then((res) => {
+        if(res)
+          userHealth = parseInt(res)
+      })
+
       let currentUserStreak = 0
       await getItemFor(LocalStorageKeys.USER_STREAK).then((res) => {
         if(res)
@@ -94,8 +106,10 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate}: HealthConnectPro
         })
         if(userStepTarget && (dailyPoints+stepsCount) >= parseInt(userStepTarget))
           currentUserStreak += 1
-        else
+        else {
           currentUserStreak = 0
+          userHealth -= 20
+        }
         // console.log(currentDate,currentUserStreak,dailyPoints,stepsCount)
         currentDate.setDate(currentDate.getDate() + 1)
       }
@@ -104,7 +118,13 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate}: HealthConnectPro
       // console.log(JSON.stringify(activityJournal))
       await storeData(LocalStorageKeys.USER_ACTIVITIES_JOURNAL, JSON.stringify(activityJournal));
       await storeData(LocalStorageKeys.LAST_ACTIVITY_JOURNAL_UPDATE, todayDate.toISOString());
-      await storeData(LocalStorageKeys.USER_STREAK,currentUserStreak.toString())
+      await storeData(LocalStorageKeys.USER_STREAK,currentUserStreak.toString());
+      await storeData(LocalStorageKeys.USER_HEALTH,userHealth.toString());
+
+      if(userHealth < 0)
+        setModalVisible(true)
+
+      onUpdate()
     } catch (error) {
       console.error('Failed to update daily steps', error);
     } finally {
@@ -164,7 +184,7 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate}: HealthConnectPro
 
       const todayDateString = getStartOfDay(new Date(getTodayDate().setDate(getTodayDate().getDate() + 1))).toISOString().split('T')[0];
       const todayEntry = activityJournal.journal.find(day => day.date === todayDateString);
-      console.log(JSON.stringify(todayEntry))
+      // console.log(JSON.stringify(todayEntry))
       if (todayEntry) {
         todayEntry.dailySteps = stepsCount;
       } else {
@@ -185,6 +205,11 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate}: HealthConnectPro
     }
   };
 
+  const resetCharacter = () => {
+    storeData(LocalStorageKeys.USER_HEALTH,'100')
+    storeData(LocalStorageKeys.USER_STREAK, '0')
+    onStreakReset()
+  }
 
   const getStartOfDay = (date: Date): Date => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
@@ -227,9 +252,85 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate}: HealthConnectPro
   }, [loading]);
 
   return (
-    <ThemedText>
-      Step Counter last 24 hours: {todaySteps}
-    </ThemedText>
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={modalVisible}
+      >
+      <View style={[styles.centeredView]}>
+        <View style={styles.modalView}>
+          <Scrollable headerBackgroundColor = {true} noPadding={true}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <ThemedText type="title" style={{color: 'black'}}>Zombie cię dopadło</ThemedText>
+              <Ionicons name={'skull'} size={128}/>
+            </View>
+          </Scrollable>
+          <Pressable
+            style={({pressed}) => [
+              {
+                backgroundColor: pressed ? 'white' : '#4656cd',
+              },
+              styles.button
+            ]}
+            onPress={() => {
+              resetCharacter()
+              setModalVisible(!modalVisible)
+            }}
 
+          >
+            <ThemedText style={{textAlign: 'center', marginHorizontal: 10}}>Reset</ThemedText>
+          </Pressable>
+        </View>
+      </View>
+    </Modal>
   );
 }
+
+
+const styles = StyleSheet.create({
+    button: {
+      marginTop: 10,
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2,
+      width: '80%',
+      alignItems: 'center',
+    },
+    buttonClose: {
+      backgroundColor: '#4656cd',
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 50,
+    },
+    modalView: {
+      // margin: 20,
+      backgroundColor: 'rgba(255,255,255,0.95)',
+      borderRadius: 20,
+      paddingHorizontal: 20,
+      paddingVertical: 20,
+      minHeight: 260,
+      height: '45%',
+      width: '85%',
+      alignItems: 'center',
+      shadowColor: '#1e1f22',
+      shadowOffset: {
+        width: 4,
+        height: 10,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 10,
+      elevation: 5,
+    },
+    pickerWrapper:{
+      marginTop: 10,
+      backgroundColor: "white",
+      borderStyle: "solid",
+      borderWidth: 1,
+      borderColor: 'grey',
+      borderRadius: 5,
+    },
+  }
+)

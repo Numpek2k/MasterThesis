@@ -3,12 +3,10 @@ import {HealthConnectStepCounter} from "@/components/homePage/HealthConnectStepC
 import React, {useState} from "react";
 import {Scrollable} from "@/components/Scrollable";
 import {ThemedView} from "@/components/ThemedView";
-import {ThemedText} from "@/components/ThemedText";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalStorageKeys from "@/constants/localStorageConst"
 import UserInformation from "@/components/homePage/userInformation";
-import {getItemFor, storeData} from "@/helpers/storageHepler";
-import {store} from "expo-router/build/global-state/router-store";
+import {storeData} from "@/helpers/storageHepler";
 
 export default function HomeScreen() {
   const [todaySteps, setTodaySteps] = useState(0);

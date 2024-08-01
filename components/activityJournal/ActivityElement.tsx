@@ -2,7 +2,7 @@ import {PropsWithChildren} from "react";
 import {ActivityItem} from "@/interfaces/activityJournal";
 import {Pressable, StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
-import {ActivityLabels, PhysicalActivities, PhysicalActivityKey} from "@/constants/physicalActivities";
+import {ActivityLabels, PhysicalActivities} from "@/constants/physicalActivities";
 
 type ActivityJournalProp = PropsWithChildren<{
   item: ActivityItem

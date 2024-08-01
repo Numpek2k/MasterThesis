@@ -4,7 +4,6 @@ import {ThemedText} from "@/components/ThemedText";
 import {useEffect, useState} from "react";
 import {getItemFor} from "@/helpers/storageHepler";
 import * as LocalStorageKeys from '@/constants/localStorageConst'
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface UserInfoProps {
   userSteps: number

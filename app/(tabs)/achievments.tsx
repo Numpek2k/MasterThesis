@@ -1,13 +1,11 @@
-import {Pressable, StyleSheet, View, Clipboard} from 'react-native';
+import {Clipboard, Pressable, StyleSheet, View} from 'react-native';
 import {ThemedText} from '@/components/ThemedText';
 import {Scrollable} from "@/components/Scrollable";
-import {WeeklyRankBoard} from "@/constants/weeklyRankConst";
-import RankElement from "@/components/weeklyRank/RankElement";
 import {useCallback, useEffect, useState} from "react";
 import {ActivityJournal} from "@/interfaces/activityJournal";
 import {getItemFor} from "@/helpers/storageHepler";
 import * as LocalStorageKeys from "@/constants/localStorageConst";
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {PhysicalActivityKey} from "@/constants/physicalActivities";
 import {Achievement} from "@/interfaces/achievement";
 import {Achievements} from "@/constants/achievements";

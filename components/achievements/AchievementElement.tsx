@@ -1,6 +1,5 @@
 import {Image, StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
-import ProgressBar from "@/components/ProgressBar";
 import {Achievement} from "@/interfaces/achievement";
 import Ionicons from "@expo/vector-icons/Ionicons";
 

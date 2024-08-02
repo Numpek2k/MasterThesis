@@ -1,4 +1,4 @@
-import {PropsWithChildren, useEffect} from 'react';
+import {PropsWithChildren, useEffect, useState} from 'react';
 import {Image, StyleSheet, useColorScheme} from 'react-native';
 import Animated, {
   Easing,
@@ -7,6 +7,9 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';
+import {aggregateRecord, initialize} from "react-native-health-connect";
+import {getItemFor, storeData} from "@/helpers/storageHepler";
+import * as LocalStorageKeys from "@/constants/localStorageConst";
 
 
 type Props = PropsWithChildren<{
@@ -17,15 +20,73 @@ export default function AnimatedMainView({
   children,
   headerBackgroundColor,
 }: Props) {
+  const [todaySteps, setTodaySteps] = useState(0)
+  const [rightValue, setRightValue] = useState('-75%'); // Default value
   const colorScheme = useColorScheme() ?? 'light';
 
   const translateX = useSharedValue(0);
+
+  const initializeHealthConnect = async () => {
+    const result = await initialize();
+  };
 
   const headerImageAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: translateX.value }],
     };
   });
+
+  const aggregateTodaySteps = async () => {
+    const todayStart = getStartOfDay(getTodayDate()).toISOString();
+    const todayEnd = getEndOfDay(getTodayDate()).toISOString();
+    // console.log(todayStart,todayEnd)
+    try {
+      const result = await aggregateRecord({
+        recordType: 'Steps',
+        timeRangeFilter: {
+          operator: 'between',
+          startTime: todayStart,
+          endTime: todayEnd,
+        },
+      })
+      setTodaySteps(result.COUNT_TOTAL)
+    } catch (error) {
+      console.error('Failed to aggregateTodaySteps today\'s steps', error);
+    }
+  };
+
+  const getStartOfDay = (date: Date): Date => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+  };
+
+  const getEndOfDay = (date: Date): Date => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+  };
+
+  const getTodayDate = (): Date => {
+    return new Date();
+  };
+
+
+  const calculateDistance = async () => {
+    const stepTarget = await getItemFor(LocalStorageKeys.USER_DATA_DAILY_STEP_TARGET);
+    const min = 30;
+    const max = 75;
+    let percentage = 30;
+    if (stepTarget)
+      percentage = min + ((todaySteps / parseInt(stepTarget)) * (max - min));
+    setRightValue(`-${percentage}%`);
+  }
+
+  useEffect(() =>{
+    initializeHealthConnect()
+    aggregateTodaySteps()
+  },[])
+
+  useEffect(() =>{
+    calculateDistance()
+  },[todaySteps])
+
 
   useEffect(() => {
     translateX.value = withRepeat(
@@ -97,7 +158,7 @@ export default function AnimatedMainView({
             <Animated.View style={styles.gifOverlay}>
               <Image
                   source={require('../assets/images/mainScrean/male_run.gif')}
-                  style={[styles.gifMainCharacter, styles.character]}
+                  style={[styles.gifMainCharacter, styles.character, {right: rightValue as any}]}
               />
             </Animated.View>
           </Animated.View>
@@ -173,6 +234,6 @@ const styles = StyleSheet.create({
   },
   character: {
     top: '72%',
-    right: '-75%'
+    // right: '-75%'
   },
 });

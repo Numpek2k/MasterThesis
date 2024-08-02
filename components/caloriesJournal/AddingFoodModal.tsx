@@ -24,7 +24,7 @@ export default function AddingFoodModal({ nutritionJournal, updateJournal }: Add
     try {
       const response = await fetch(`https://api.calorieninjas.com/v1/nutrition?query=${query}`, {
         headers: {
-          'X-Api-Key': CALORIES_NINJA_API_KEY
+          'X-Api-Key': 'yOFnA8o4QfYxH2ZSHY9ikQ==4fw9PeUBtO60wvmj'
         }
       });
       if (!response.ok) {

@@ -155,13 +155,13 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate, onStreakReset,onU
         accessType: 'read',
         recordType: 'Steps',
       },
-      {
-        accessType: 'read',
-        recordType: 'ExerciseSession',
-      }
+      // {
+      //   accessType: 'read',
+      //   recordType: 'ExerciseSession',
+      // }
     ]).then((permissions) => {
       console.log('Granted permissions on request ', {permissions});
-    });
+    }).catch((err) => console.log('Permission error', err));
   };
 
   const aggregateTodaySteps = async () => {
@@ -231,9 +231,10 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate, onStreakReset,onU
 
   useEffect(() => {
     initializeHealthConnect()
+    requestSamplePermissions()
     checkAvailability()
 
-    // requestSamplePermissions()
+
     // updateDailySteps()
   }, []);
 

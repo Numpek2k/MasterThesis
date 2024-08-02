@@ -53,7 +53,7 @@ export default function RootLayout() {
           headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
       </AnimatedMainView>
 
-      {hasLaunched ? <FirstTimeUseSettings/> : null}
+      {hasLaunched ? null : <FirstTimeUseSettings/>}
 
       <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

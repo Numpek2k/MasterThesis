@@ -21,9 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "android.permission.health.READ_STEPS",
-        "android.permission.health.READ_EXERCISE",
-        "android.permission.health.WRITE_STEPS"
+        "android.permission.health.READ_STEPS"
       ],
       "package": "com.anonymous.OutrunTheZombiesR",
       "config": {

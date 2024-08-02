@@ -68,7 +68,7 @@ export default function TabFourScreen() {
   );
 
   useEffect(() => {
-    if(!loading)
+    if(loading)
       fetchPointsAndStepsLast7Days()
   }, [loading]);
 

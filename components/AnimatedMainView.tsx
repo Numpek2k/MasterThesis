@@ -50,6 +50,7 @@ export default function AnimatedMainView({
         },
       })
       setTodaySteps(result.COUNT_TOTAL)
+      console.log("animated view",result)
     } catch (error) {
       console.error('Failed to aggregateTodaySteps today\'s steps', error);
     }
@@ -78,14 +79,14 @@ export default function AnimatedMainView({
     setRightValue(`-${percentage}%`);
   }
 
-  useEffect(() =>{
-    initializeHealthConnect()
-    aggregateTodaySteps()
-  },[])
-
-  useEffect(() =>{
-    calculateDistance()
-  },[todaySteps])
+  // useEffect(() =>{
+  //   initializeHealthConnect()
+  //   aggregateTodaySteps()
+  // },[])
+  //
+  // useEffect(() =>{
+  //   calculateDistance()
+  // },[todaySteps])
 
 
   useEffect(() => {

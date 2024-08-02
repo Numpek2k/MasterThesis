@@ -32,6 +32,7 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate, onStreakReset,onU
   const [activityJournal, setActivityJournal] = useState<ActivityJournal>({journal: []});
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false)
+  const [permission, setPermission] = useState(false)
 
   const initializeHealthConnect = async () => {
     const result = await initialize();
@@ -180,13 +181,17 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate, onStreakReset,onU
 
       const stepsCount = result.COUNT_TOTAL;
       setTodaySteps(stepsCount);
+      console.log(todayStart, todayEnd)
+      console.log('here', result)
       onTodayStepsUpdate(stepsCount);
 
       const todayDateString = getStartOfDay(new Date(getTodayDate().setDate(getTodayDate().getDate() + 1))).toISOString().split('T')[0];
       const todayEntry = activityJournal.journal.find(day => day.date === todayDateString);
+      console.log(todayDateString)
       // console.log(JSON.stringify(todayEntry))
       if (todayEntry) {
         todayEntry.dailySteps = stepsCount;
+        console.log(todayEntry)
       } else {
         activityJournal.journal.push({
           date: todayDateString,
@@ -231,12 +236,16 @@ export function HealthConnectStepCounter({ onTodayStepsUpdate, onStreakReset,onU
 
   useEffect(() => {
     initializeHealthConnect()
-    requestSamplePermissions()
+    // requestSamplePermissions()
     checkAvailability()
 
-
-    // updateDailySteps()
+    updateDailySteps()
   }, []);
+  //
+  // useEffect(() => {
+  //   if(permission)
+  //     updateDailySteps()
+  // }, [permission]);
 
   useEffect(() => {
     if(!loading) {

@@ -86,7 +86,7 @@ export default function TabFiveScreen() {
   );
 
   useEffect(() => {
-    if(!loading)
+    if(loading)
       aggregateAchievements()
   }, [loading]);
 

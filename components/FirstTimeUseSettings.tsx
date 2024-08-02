@@ -10,7 +10,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import CollapsibleView from "@/components/CollapsibleView";
 
 
-export default function firstTimeUseSettings({children} :PropsWithChildren){
+export default function FirstTimeUseSettings({children} :PropsWithChildren){
 
   const [loaded] = useFonts({
     MinecraftRegular: require('../assets/fonts/F77MinecraftRegular.ttf'),
@@ -121,11 +121,7 @@ export default function firstTimeUseSettings({children} :PropsWithChildren){
     <Modal
       animationType="fade"
       transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-        setModalVisible(!modalVisible);
-      }}>
+      visible={modalVisible}>
       <View style={[styles.centeredView]}>
         <View style={styles.modalView}>
           <Scrollable headerBackgroundColor = {true} noPadding={true}>

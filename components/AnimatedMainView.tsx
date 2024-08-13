@@ -79,14 +79,14 @@ export default function AnimatedMainView({
     setRightValue(`-${percentage}%`);
   }
 
-  // useEffect(() =>{
-  //   initializeHealthConnect()
-  //   aggregateTodaySteps()
-  // },[])
-  //
-  // useEffect(() =>{
-  //   calculateDistance()
-  // },[todaySteps])
+  useEffect(() =>{
+    initializeHealthConnect()
+    aggregateTodaySteps()
+  },[])
+
+  useEffect(() =>{
+    calculateDistance()
+  },[todaySteps])
 
 
   useEffect(() => {

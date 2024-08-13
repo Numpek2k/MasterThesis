@@ -1,12 +1,14 @@
 import {Button, StyleSheet} from 'react-native';
 import {HealthConnectStepCounter} from "@/components/homePage/HealthConnectStepCounter";
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {Scrollable} from "@/components/Scrollable";
 import {ThemedView} from "@/components/ThemedView";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalStorageKeys from "@/constants/localStorageConst"
 import UserInformation from "@/components/homePage/userInformation";
-import {storeData} from "@/helpers/storageHepler";
+import {getItemFor, storeData} from "@/helpers/storageHepler";
+import {useFocusEffect} from "@react-navigation/native";
+import {UsageJournal} from "@/interfaces/usageJournal";
 
 export default function HomeScreen() {
   const [todaySteps, setTodaySteps] = useState(0);
@@ -37,6 +39,39 @@ export default function HomeScreen() {
   const onUpdate = () => {
     setUpdated(true)
   }
+  const annotateUsage = async () => {
+    try{
+      const journalString = await getItemFor(LocalStorageKeys.USER_LOGIN_JOURNAL);
+      let journal: UsageJournal
+      if (journalString) {
+        journal = JSON.parse(journalString);
+      } else {
+        const username = await getItemFor(LocalStorageKeys.USER_DATA_USERNAME);
+        if(username)
+          journal = {
+            username: username,
+            login_dates: []
+          };
+        else
+          journal = {
+            username: 'EMPTYUSERNAME',
+            login_dates: []
+          };
+      }
+
+      journal.login_dates.push(new Date())
+      console.log(JSON.stringify(journal))
+      await storeData(LocalStorageKeys.USER_LOGIN_JOURNAL, JSON.stringify(journal))
+    } catch (error) {
+      console.error("Error fetching login journal data:", error);
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      annotateUsage();
+    }, [])
+  );
 
   return (
     <Scrollable>

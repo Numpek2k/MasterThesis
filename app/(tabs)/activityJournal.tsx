@@ -3,10 +3,12 @@ import { StyleSheet } from 'react-native';
 import { Scrollable } from "@/components/Scrollable";
 import AddingActivityModal from "@/components/activityJournal/AddingActivityModal";
 import ActivityJournalComponent from "@/components/activityJournal/ActivityJournalComponent";
-import { useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import { getItemFor, storeData } from "@/helpers/storageHepler";
 import * as LocalStorageKeys from "@/constants/localStorageConst";
-import { ActivityJournal, UpdateJournalFunction } from "@/interfaces/activityJournal"; // Adjust the import path as needed
+import { ActivityJournal, UpdateJournalFunction } from "@/interfaces/activityJournal";
+import {useFocusEffect} from "@react-navigation/native";
+import {UsageJournal} from "@/interfaces/usageJournal"; // Adjust the import path as needed
 
 export default function TabTwoScreen() {
   const [activityJournal, setActivityJournal] = useState<ActivityJournal>({ journal: [] });
@@ -27,9 +29,14 @@ export default function TabTwoScreen() {
     }
   };
 
-  useEffect(() => {
-    fetchJournal();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchJournal();
+      return () => {
+        setLoading(true)
+      };
+    }, [])
+  );
 
   const updateJournal: UpdateJournalFunction = async (updatedJournal: ActivityJournal) => {
     setActivityJournal(updatedJournal);

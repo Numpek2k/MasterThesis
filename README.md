@@ -1,50 +1,39 @@
-# Welcome to your Expo app 👋
+# OutrunTheZombies
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![OutrunTheZombies Logo](projects/outrunzombies/logo.png)
 
-## Get started
+OutrunTheZombies is a fitness app designed to motivate users through gamification. By incorporating features such as achievements, ranks, progress tracking, a virtual avatar, and streaks, the app aims to boost user engagement, consistency, and retention in physical activity.
 
-1. Install dependencies
+## Features
+- **Achievements**: Earn badges for completing various fitness milestones.
+- **Ranks**: Progress through ranks as you achieve fitness goals.
+- **Progress Tracking**: Monitor your activity levels and improvements over time.
+- **Virtual Avatar**: Customize and upgrade your avatar based on your fitness progress.
+- **Streaks**: Maintain daily activity streaks to stay motivated.
 
+## Tech Stack
+- [React Native](https://reactnative.dev/)
+- [Expo](https://expo.dev/)
+- [Google API](https://developers.google.com/)
+- [Google FIT](https://developers.google.com/fit/)
+
+## Project URL
+You can find the project repository on GitHub: [OutrunTheZombies Repository](https://github.com/Numpek2k/MasterThesis)
+
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Numpek2k/MasterThesis.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd MasterThesis
+   ```
+3. Install dependencies:
    ```bash
    npm install
    ```
-
-2. Start the app
-
+4. Start the development server:
    ```bash
-    npx expo start
+   npm start
    ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
